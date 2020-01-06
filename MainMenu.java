@@ -35,7 +35,7 @@ public class MainMenu extends JFrame {
 		});
 	}
 	
-	public void loadFile(File file)
+	public void loadMembers(File file)
 	{
 		try {
 			Scanner scan = new Scanner(file);
@@ -52,6 +52,26 @@ public class MainMenu extends JFrame {
 				String[] array = row.get(i);
 				Member mem = new Member(array[0], Integer.parseInt(array[1]), array[2], array[3], Integer.parseInt(array[4]), array[5], array[6]);
 				memberList.add(mem);
+			}
+			scan.close();
+		}
+		catch(FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void loadStudents(File file)
+	{
+		try {
+			Scanner scan = new Scanner(file);
+			
+			ArrayList<String[]> row = new ArrayList <String[]>();
+			while(scan.hasNextLine())
+			{
+				String str = scan.nextLine();
+				String[] arr = str.split(",");
+				row.add(arr);
 			}
 			for(int i = 0; i < row.size(); i++)
 			{
