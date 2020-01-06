@@ -4,8 +4,11 @@ import javax.swing.JFrame;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -25,14 +28,43 @@ public class MainMenu extends JFrame {
 				try {
 					MainMenu window = new MainMenu();
 					window.setVisible(true);
-					FileWriter writer = new FileWriter("MyFile.txt", true);
-					BufferedWriter buff = new BufferedWriter(writer);
-					buff.close();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
+	}
+	
+	public void loadFile(File file)
+	{
+		try {
+			Scanner scan = new Scanner(file);
+			
+			ArrayList<String[]> row = new ArrayList <String[]>();
+			while(scan.hasNextLine())
+			{
+				String str = scan.nextLine();
+				String[] arr = str.split(",");
+				row.add(arr);
+			}
+			for(int i = 0; i < row.size(); i++)
+			{
+				String[] array = row.get(i);
+				Member mem = new Member(array[0], Integer.parseInt(array[1]), array[2], array[3], Integer.parseInt(array[4]), array[5], array[6]);
+				memberList.add(mem);
+			}
+			for(int i = 0; i < row.size(); i++)
+			{
+				String[] array = row.get(i);
+				Student stu = new Student(array[0], Integer.parseInt(array[1]), array[2], array[3], array[4]);
+				studentList.add(stu);
+			}
+			scan.close();
+		}
+		catch(FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -58,7 +90,7 @@ public class MainMenu extends JFrame {
 		JButton btnCreateProfile = new JButton("Create Profile");
 		btnCreateProfile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Ask ask = new Ask(memberList, studentList);
+				Ask ask = new Ask(studentList, memberList);
 				ask.setVisible(true);
 			}
 		});
